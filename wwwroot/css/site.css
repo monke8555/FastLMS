@@ -1,6 +1,42 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.xx-large {
+    font-size: xx-large;
+}
+
+.x-large {
+    font-size: x-large;
+}
+
+.larger {
+    font-size: larger;
+}
+
+.large {
+    font-size: large;
+}
+
+.medium {
+    font-size: medium;
+}
+
+.small {
+    font-size: small
+}
+
+.smaller {
+    font-size: smaller;
+}
+
+.x-small {
+    font-size: x-small;
+}
+
+.xx-small {
+    font-size: xx-small;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;

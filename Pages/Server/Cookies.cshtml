@@ -1,0 +1,30 @@
+﻿@page
+@using ExaminerApp.Pages.Server
+@using Microsoft.AspNetCore.Http;
+@model CookiesModel
+@{
+    Layout = "";
+    ViewData["Title"] = "Error - Access denied";
+
+    var Post = HttpContext.Request.Form;
+
+    switch (Post["type"])
+    {
+        case "set":
+            var cookieOptions = new CookieOptions();
+            cookieOptions.Path = Post["path"];
+            cookieOptions.Expires = new DateTimeOffset(Convert.ToDateTime(Post["expires"]));
+            HttpContext.Response.Cookies.Append(Post["name"], Post["value"], cookieOptions);
+            break;
+
+        case "delete":
+            var abc = new CookieOptions();
+            abc.Expires = new DateTimeOffset(DateTime.Now.AddDays(-1));
+            HttpContext.Response.Cookies.Append(Post["name"], "", abc);
+            break;
+
+        default: break;
+    }
+}
+
+@ViewData["Title"];

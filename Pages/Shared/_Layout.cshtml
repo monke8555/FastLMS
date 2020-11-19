@@ -1,13 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ExaminerApp</title>
+    <title>@ViewData["Title"] - Examiner</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
+<body id="body">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -37,14 +45,56 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - ExaminerApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2020 - Examiner - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @{
+        @RenderSection("Scripts", required: false)
+        if (Context.Request.Cookies["cookieDialogShown"] != "true")
+        {
+            <div style="background-color:#211fcc;color:white" id="cookieConsent" class="footer alert alert-dismissible text-center" role="alert">
+                <div>
+                    <p>
+                        <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website.
+                        <a href="http://cookiesandyou.com/" target="_blank">Learn more</a>
+                        <button id="cookieAgree" type="button" class="btn btn-primary btn-sm" aria-label="Close">
+                            I agree
+                        </button>
+                    </p>
+                </div>
+            </div>
 
-    @RenderSection("Scripts", required: false)
+            <script>
+                document.getElementById("cookieAgree").onclick = function () {
+                    document.getElementById("cookieConsent").style.display = "none";
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Server/Cookies',
+                        headers:
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        },
+                        data: {
+                            type: "set",
+                            name: "cookieDialogShown",
+                            value: "true",
+                            path: "/",
+                            @{
+                                var expires = DateTime.Now.AddDays(30);
+                            }
+                            expires: "@expires"
+                        },
+                        success: function (data) {
+                            console.log("Success. Cookie prompt will not be shown for 30 days.");
+                        }
+                    });
+                        }
+            </script>
+        }
+    }
 </body>
 </html>

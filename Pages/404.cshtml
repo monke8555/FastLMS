@@ -1,0 +1,27 @@
+﻿@page
+@using ExaminerApp.Pages
+@model _404Model
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Error - Page not found";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="keywords" http-equiv="404, error, examiner, examinerapp, Omer, B., Hijazi">
+    <meta name="author" http-equiv="Omer B. Hijazi">
+    <meta name="description" http-equiv="Error: The page you requested does not exist">
+</head>
+<body>
+    <p class="text-left x-large">Hmm, the page you requested doesn't exist. <br> 
+    It may have run away. (They usually do!) <br />
+    Maybe try one of these links?</p>
+    <br>
+    <ul class="text-left larger list-unstyled">
+        <li><a asp-page="/">Home</a></li>
+        <li><a>Login</a></li>
+        <li><a></a></li>
+    </ul>
+</body>
+</html>
