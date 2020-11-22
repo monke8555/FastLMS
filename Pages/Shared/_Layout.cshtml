@@ -4,16 +4,32 @@
     {
         return Xsrf.GetAndStoreTokens(Context).RequestToken;
     }
+    string username = "rpkrfgnqbbhinp";
+    string password = "1cd802b7d100305eee7ab7197f6b7f8282f4b6dd4091689196864dcf1dd3b103";
+    string server = "ec2-54-205-248-255.compute-1.amazonaws.com";
+    string database = "dcag9cig1ta0uu";
+    string port = "5432";
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DX0DZ5YSLZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DX0DZ5YSLZ');
+    </script>
+    <script data-ad-client="ca-pub-8377409119207649" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Examiner</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/w3/w3.css" />
 </head>
 <body id="body">
     <header>
@@ -51,27 +67,97 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/w3/w3.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @{
         @RenderSection("Scripts", required: false)
         if (Context.Request.Cookies["cookieDialogShown"] != "true")
         {
-            <div style="background-color:#211fcc;color:white" id="cookieConsent" class="footer alert alert-dismissible text-center" role="alert">
-                <div>
-                    <p>
-                        <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website.
-                        <a href="http://cookiesandyou.com/" target="_blank">Learn more</a>
-                        <a asp-page="/Privacy">Privacy Policy</a>
-                        <button id="cookieAgree" type="button" class="btn btn-primary btn-sm" aria-label="Close">
-                            I agree
-                        </button>
-                    </p>
+            <div class="w3-container">
+                <div id="consentContainer" style="display:block;" class="w3-modal w3-animate-opacity">
+                    <div style="background-color:#0874e9;color:white;" class="w3-round-large w3-modal-content w3-card-4">
+                        <header class="larger w3-container">
+                            <h2>Cookie Consent</h2>
+                        </header>
+                        <br />
+                        <div class="w3-container">
+                            <b>Do you like cookies? &#127850;</b> We use cookies to ensure you get the best experience on our website. <br />
+                            By continuing to browse you agree to the usage of cookies. <br /> <br />
+                            <button id="cookieAgree" type="button" class="large btn btn-primary btn-sm" aria-label="Close">
+                                Got it
+                            </button>
+                        </div>
+                        <br />
+                        <footer class="small w3-container">
+                            <p>
+                                <a href="http://cookiesandyou.com/" target="_blank">Learn more</a>
+                                <a asp-page="/Privacy">Privacy Policy</a>
+                                <a class="showCookieInfo">Cookie Info</a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+                <div class="w3-container">
+
+                    <div id="cookieInfo" class="w3-modal">
+                        <div class="w3-modal-content w3-card-4 w3-animate-opacity">
+                            <header class="w3-container w3-blue">
+                                <span class="closeCookieInfo w3-button w3-blue w3-xlarge w3-display-topright">&times;</span>
+                                <h2>Cookie Information</h2>
+                            </header>
+
+                            <div class="w3-bar w3-border-bottom">
+                                <button class="tablink w3-bar-item w3-button" onclick="openTab(event, 'Default')">Default</button>
+                                <button class="tablink w3-bar-item w3-button" onclick="openTab(event, 'Local')">Local</button>
+                                <button class="tablink w3-bar-item w3-button" onclick="openTab(event, 'External')">External</button>
+                            </div>
+
+                            <div id="Default" class="w3-container tab">
+                                <h1>Default</h1>
+                                <p>
+                                    There is currently one default cookie: <br />
+                                    <code>.AspNetCore.Antiforgery.xxxxxxx</code> <br />
+                                    It is used to prevent Cross-Site Request Forgery <br />
+                                    <a href="https://docs.microsoft.com/en-us/aspnet/core/security/anti-request-forgery?view=aspnetcore-5.0">More on that here</a>
+                                </p>
+                            </div>
+                            <br />
+
+                            <div id="Local" class="w3-container tab">
+                                <h1>Local</h1>
+                                The local cookies include: <br />
+                                1) <code>cookieDialogShown</code>: Holds true or false depending on whether or not you've clicked "Got It" in the cookie consent, so that it doesnt show it every time you open this website <br />
+                                2) <code>loggedIn</code> Holds true or false depending on whether or not you've logged in <br />
+                                3) <code>usernameHash</code> Holds a hash of the username you logged in with <br />
+                                4) <code>passwordHash</code>: Holds a hash of the password you logged in with
+                            </div>
+                            <br />
+
+                            <div id="External" class="w3-container tab">
+                                <h1>External</h1>
+                                The only external cookies are from <a href="https://analytics.google.com">Google Analytics</a> and <a href="https://adsense.google.com">Google Adsense</a>
+                            </div>
+                            <br />
+
+                            <div class="w3-container w3-light-grey w3-padding">
+                                <button class="closeCookieInfo w3-button w3-right w3-white w3-border">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <script>
-                document.getElementById("cookieAgree").onclick = function () {
-                    document.getElementById("cookieConsent").style.display = "none";
+                document.getElementsByClassName("tablink")[0].click();
+                $(".showCookieInfo").click(function () {
+                    $("#cookieInfo").css("display", "block");
+                });
+                $(".closeCookieInfo").click(function () {
+                    $("#cookieInfo").css("display", "none");
+                });
+                $("#cookieAgree").click(function () {
+                    document.getElementById('consentContainer').style.display = 'none'
                     $.ajax({
                         type: 'POST',
                         url: '/Server/Cookies',
@@ -93,7 +179,7 @@
                             console.log("Success. Cookie prompt will not be shown for 30 days.");
                         }
                     });
-                        }
+                });
             </script>
         }
     }
